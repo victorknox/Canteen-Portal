@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+    frontend:
+      depends_on:
+        - backend
+      build: ./frontend
+    backend:
+      build: ./backend
+      restart: unless-stopped
+    nginx:
+      image: nginx:latest
+      depends_on:
+        - backend
+        - frontend
+      container_name: webserver
+      restart: unless-stopped
+      ports:
+        - 80:80
+        - 443:443
+      volumes:
+        - ./nginx/local.conf:/etc/nginx/nginx.conf
+
